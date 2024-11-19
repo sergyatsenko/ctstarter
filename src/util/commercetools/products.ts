@@ -1,4 +1,8 @@
-import { Category, Product } from "@commercetools/platform-sdk";
+import {
+  Category,
+  Product,
+  ProductProjection,
+} from "@commercetools/platform-sdk";
 import { apiRoot } from "./apiClient";
 
 // const customerId: string = "ffec2d66-a518-4266-8447-091150ca4cc4";
@@ -58,6 +62,59 @@ export async function getCategoryByKey(key: string): Promise<Category> {
   } catch (error) {
     console.log(JSON.stringify(error, null, 2));
     throw new Error(`Category with key ${key} not found`);
+  }
+}
+
+export async function getProductsByCategoryKey(
+  key: string,
+  limit: number,
+  page: number
+): Promise<Product[]> {
+  try {
+    const predicate = `categories(key="${key}")`;
+    const response = await apiRoot
+      .products()
+      .get({
+        queryArgs: {
+          where: predicate,
+          limit: limit,
+          offset: (page - 1) * limit,
+        },
+      })
+      .execute();
+
+    console.log("page", page);
+    console.log("Success", JSON.stringify(response.body, null, 2));
+    return response.body.results;
+  } catch (error) {
+    console.log(JSON.stringify(error, null, 2));
+    throw error;
+  }
+}
+
+export async function getProductsInCategory(
+  categoryId: string,
+  limit: number = 20,
+  offset: number = 0
+): Promise<ProductProjection[]> {
+  try {
+    const response = await apiRoot
+      .productProjections()
+      .search()
+      .get({
+        queryArgs: {
+          filter: [`categories.id:"${categoryId}"`],
+          limit: limit,
+          offset: offset,
+          staged: false, // Set to true if you want to include staged (unpublished) products
+        },
+      })
+      .execute();
+
+    return response.body.results;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
   }
 }
 
