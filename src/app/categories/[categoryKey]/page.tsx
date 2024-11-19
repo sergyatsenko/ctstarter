@@ -60,12 +60,24 @@ export default async function CategoryPage({
         {products.length > 0 ? (
           <div className="grid gap-4">
             {products.map((product) => (
-              <div
-                key={product.id}
-                className="p-4 border rounded hover:bg-gray-50"
-              >
-                <p className="font-medium">{product.name[locale]}</p>
-                <p className="text-sm text-gray-500">ID: {product.id}</p>
+              <div key={product.id} className="bg-gray-50 p-4 rounded-lg">
+                <Link
+                  href={`/categories/${category.key}/${product.key}`}
+                  className="block hover:opacity-75 transition-opacity"
+                >
+                  <h3 className="text-xl font-semibold mb-2">
+                    {product.name[locale]}
+                  </h3>
+                  <div className="grid gap-2 text-sm">
+                    <div>
+                      <span className="font-medium">ID:</span> {product.id}
+                    </div>
+                    <div>
+                      <span className="font-medium">Slug:</span>{" "}
+                      {product.slug[locale]}
+                    </div>
+                  </div>
+                </Link>
               </div>
             ))}
           </div>

@@ -134,5 +134,20 @@ export async function getProductById(productId: string): Promise<Product> {
   }
 }
 
+export async function getProductByKey(key: string): Promise<Product> {
+  try {
+    const response = await apiRoot
+      .products()
+      .withKey({ key })
+      .get()
+      .execute();
+
+    return response.body;
+  } catch (error) {
+    console.log(JSON.stringify(error, null, 2));
+    throw new Error(`Product with key ${key} not found`);
+  }
+}
+
 //productFetchById(productId);
 //export { getProductById as productFetchById };
