@@ -1,6 +1,6 @@
 import { getProductByKey } from "@/util/commercetools/products";
 import Link from "next/link";
-import Image from "next/image";
+import ProductImageGallery from "@/components/ProductImageGallery";
 
 interface PageProps {
   params: {
@@ -28,43 +28,36 @@ export default async function ProductPage({ params }: PageProps) {
       </Link>
 
       <div className="bg-white shadow rounded-lg p-8">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-8">
-          {product.masterData.current.name["en-US"]}
-        </h1>
-
-        <div className="grid gap-6">
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Product Images */}
           <div>
-            <span className="font-bold">Description:</span>
-            <p className="mt-2">
-              {product.masterData.current.description["en-US"]}
-            </p>
+            <ProductImageGallery 
+              images={product.masterData.current.masterVariant.images || []}
+              productName={product.masterData.current.name["en-US"]}
+            />
           </div>
 
-          <div>
-            <span className="font-bold">Slug:</span>
-            <p className="mt-2">{product.masterData.current.slug["en-US"]}</p>
-          </div>
+          {/* Product Info */}
+          <div className="space-y-6">
+            <h1 className="text-3xl sm:text-4xl font-bold">
+              {product.masterData.current.name["en-US"]}
+            </h1>
 
-          <div>
-            <span className="font-bold">Master Variant:</span>
-            <div className="mt-2 space-y-2">
-              <p>SKU: {product.masterData.current.masterVariant.sku}</p>
-              {product.masterData.current.masterVariant.images && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {product.masterData.current.masterVariant.images.map(
-                    (image, index) => (
-                      <Image
-                        key={index}
-                        src={image.url}
-                        alt={product.masterData.current.name["en-US"]}
-                        width={500}
-                        height={500}
-                        className="rounded-lg w-full h-auto object-cover"
-                      />
-                    )
-                  )}
-                </div>
-              )}
+            <div>
+              <span className="font-bold">Description:</span>
+              <p className="mt-2">
+                {product.masterData.current.description["en-US"]}
+              </p>
+            </div>
+
+            <div>
+              <span className="font-bold">Slug:</span>
+              <p className="mt-2">{product.masterData.current.slug["en-US"]}</p>
+            </div>
+
+            <div>
+              <span className="font-bold">SKU:</span>
+              <p className="mt-2">{product.masterData.current.masterVariant.sku}</p>
             </div>
           </div>
         </div>
