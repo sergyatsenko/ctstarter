@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@commercetools/platform-sdk": "^7.20.0",
+    "@commercetools/sdk-client-v2": "^2.5.0",
     "@commercetools/ts-client": "^2.1.2",
     "next": "15.0.3",
     "node-fetch": "^3.3.2",

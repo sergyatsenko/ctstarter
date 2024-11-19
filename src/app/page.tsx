@@ -1,14 +1,17 @@
 //import Image from "next/image";
-import { productFetchById } from "@/util/commercetools/customerFetch";
-import { LocalizedString } from "@commercetools/platform-sdk";
+import { getProductById, getCategories } from "@/util/commercetools/products";
+import Link from "next/link";
+//import { LocalizedString } from "@commercetools/platform-sdk";
 
 export default async function Home() {
   const productId: string = "a09c2128-e000-4501-a656-f219b1efbdb6";
-  const product = await productFetchById(productId);
-  const productName = product?.masterData?.current?.name || "";
-  const productNameEnUs = (productName as LocalizedString) || "";
+  const locale: string = process.env.SITE_LOCALE || "en-US";
 
-  console.log("valueOf", productNameEnUs["en-US"]); //
+  const categories = await getCategories(100, 1);
+  console.log("categories", categories);
+  const product = await getProductById(productId);
+  const productName = product?.masterData?.current?.name?.[locale] || "";
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -24,9 +27,37 @@ export default async function Home() {
             Product ID: {product?.id}
           </p>
           <p className="text-lg sm:text-2xl md:text-3xl">
-            Product Name: {productName.toString()}
+            Product Name: {productName}
           </p>
         </div>
+        {/* <div className="w-full mt-8">
+          <h2 className="text-2xl font-bold mb-4">Categories</h2>
+          <div className="grid gap-4">
+            {categories.map((category) => (
+              <div key={category.id} className="p-4 border rounded-lg">
+                <p>
+                  <span className="font-bold">ID:</span> {category.id}
+                </p>
+                <p>
+                  <span className="font-bold">Key:</span> {category.key}
+                </p>
+                <p>
+                  <span className="font-bold">Name:</span>{" "}
+                  {category.name[locale]}
+                </p>
+                <p>
+                  <span className="font-bold">Slug:</span>{" "}
+                  {category.slug[locale]}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div> */}
+        <Link href="/categories">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Categories Page
+          </button>
+        </Link>
       </main>
     </div>
   );
