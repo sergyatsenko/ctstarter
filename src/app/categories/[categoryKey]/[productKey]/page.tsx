@@ -17,6 +17,19 @@ export default async function ProductPage({ params }: PageProps) {
 
   const product = await getProductByKey(productKey);
   console.log("product", product);
+  console.log("price", product.masterData.current.masterVariant.price);
+  console.log("prices", product.masterData.current.masterVariant.prices);
+
+  const usPrice = product.masterData.current.masterVariant.prices?.find(
+    (price) => price.country === "US"
+  );
+
+  const formattedPrice = usPrice
+    ? new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(usPrice.value.centAmount / 100)
+    : null;
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20">
@@ -31,7 +44,7 @@ export default async function ProductPage({ params }: PageProps) {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Product Images */}
           <div>
-            <ProductImageGallery 
+            <ProductImageGallery
               images={product.masterData.current.masterVariant.images || []}
               productName={product.masterData.current.name["en-US"]}
             />
@@ -42,6 +55,12 @@ export default async function ProductPage({ params }: PageProps) {
             <h1 className="text-3xl sm:text-4xl font-bold">
               {product.masterData.current.name["en-US"]}
             </h1>
+
+            {formattedPrice && (
+              <div className="text-2xl font-bold text-blue-600">
+                {formattedPrice}
+              </div>
+            )}
 
             <div>
               <span className="font-bold">Description:</span>
@@ -57,7 +76,9 @@ export default async function ProductPage({ params }: PageProps) {
 
             <div>
               <span className="font-bold">SKU:</span>
-              <p className="mt-2">{product.masterData.current.masterVariant.sku}</p>
+              <p className="mt-2">
+                {product.masterData.current.masterVariant.sku}
+              </p>
             </div>
           </div>
         </div>
