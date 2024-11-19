@@ -3,6 +3,7 @@ import {
   getProductsInCategory,
 } from "@/util/commercetools/products";
 import Link from "next/link";
+import ProductCard from "@/components/ProductCard";
 
 export default async function CategoryPage({
   params,
@@ -58,27 +59,13 @@ export default async function CategoryPage({
       <div className="bg-white shadow rounded-lg p-6">
         <h2 className="text-2xl font-bold mb-4">Products in this category</h2>
         {products.length > 0 ? (
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
-              <div key={product.id} className="bg-gray-50 p-4 rounded-lg">
-                <Link
-                  href={`/categories/${category.key}/${product.key}`}
-                  className="block hover:opacity-75 transition-opacity"
-                >
-                  <h3 className="text-xl font-semibold mb-2">
-                    {product.name[locale]}
-                  </h3>
-                  <div className="grid gap-2 text-sm">
-                    <div>
-                      <span className="font-medium">ID:</span> {product.id}
-                    </div>
-                    <div>
-                      <span className="font-medium">Slug:</span>{" "}
-                      {product.slug[locale]}
-                    </div>
-                  </div>
-                </Link>
-              </div>
+              <ProductCard
+                key={product.id}
+                product={product}
+                categoryKey={category.key}
+              />
             ))}
           </div>
         ) : (
