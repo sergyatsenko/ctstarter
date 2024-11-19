@@ -5,15 +5,14 @@ import {
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 
-export default async function CategoryPage({
-  params,
-}: {
-  params: { categoryKey: string };
+export default async function CategoryPage(props: {
+  params: Promise<{ categoryKey: string }>;
 }) {
+  const params = await props.params;
   const locale: string = process.env.SITE_LOCALE || "en-US";
   const category = await getCategoryByKey(params.categoryKey);
   const products = await getProductsInCategory(category.id, 100);
-  console.log("products", products);
+  // console.log("products", products);
 
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20">

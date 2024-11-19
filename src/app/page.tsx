@@ -7,8 +7,8 @@ export default async function Home() {
   const productId: string = "a09c2128-e000-4501-a656-f219b1efbdb6";
   const locale: string = process.env.SITE_LOCALE || "en-US";
 
-  const categories = await getCategories(100, 1);
-  console.log("categories", categories);
+  // const categories = await getCategories(100, 1);
+  // console.log("categories", categories);
   const product = await getProductById(productId);
   const productName = product?.masterData?.current?.name?.[locale] || "";
 

@@ -40,11 +40,11 @@ export async function getCategories(
       })
       .execute();
 
-    console.log("page", page);
-    console.log("Success", JSON.stringify(response.body, null, 2));
+    // console.log("page", page);
+    // console.log("Success", JSON.stringify(response.body, null, 2));
     return response.body.results;
   } catch (error) {
-    console.log(JSON.stringify(error, null, 2));
+    console.error(JSON.stringify(error, null, 2), error);
     throw error;
   }
 }
@@ -57,10 +57,10 @@ export async function getCategoryByKey(key: string): Promise<Category> {
       .get()
       .execute();
 
-    console.log("Success", JSON.stringify(response.body, null, 2));
+    //console.log("Success", JSON.stringify(response.body, null, 2));
     return response.body;
   } catch (error) {
-    console.log(JSON.stringify(error, null, 2));
+    console.error(JSON.stringify(error, null, 2), error);
     throw new Error(`Category with key ${key} not found`);
   }
 }
@@ -83,11 +83,11 @@ export async function getProductsByCategoryKey(
       })
       .execute();
 
-    console.log("page", page);
-    console.log("Success", JSON.stringify(response.body, null, 2));
+    // console.log("page", page);
+    // console.log("Success", JSON.stringify(response.body, null, 2));
     return response.body.results;
   } catch (error) {
-    console.log(JSON.stringify(error, null, 2));
+    console.error(JSON.stringify(error, null, 2), error);
     throw error;
   }
 }
@@ -129,22 +129,18 @@ export async function getProductById(productId: string): Promise<Product> {
     //console.log("Success", JSON.stringify(response.body, null, 2));
     return response.body;
   } catch (error) {
-    console.log(JSON.stringify(error, null, 2));
+    console.error(JSON.stringify(error, null, 2), error);
     throw new Error(`Product with ID ${productId} not found`);
   }
 }
 
 export async function getProductByKey(key: string): Promise<Product> {
   try {
-    const response = await apiRoot
-      .products()
-      .withKey({ key })
-      .get()
-      .execute();
+    const response = await apiRoot.products().withKey({ key }).get().execute();
 
     return response.body;
   } catch (error) {
-    console.log(JSON.stringify(error, null, 2));
+    console.error(JSON.stringify(error, null, 2), error);
     throw new Error(`Product with key ${key} not found`);
   }
 }

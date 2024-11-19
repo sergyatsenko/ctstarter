@@ -6,14 +6,14 @@ import { ProductProjection } from "@commercetools/platform-sdk";
 
 interface ProductCardProps {
   product: ProductProjection;
-  categoryKey: string;
+  categoryKey?: string;
 }
 
 export default function ProductCard({
   product,
   categoryKey,
 }: ProductCardProps) {
-  console.log("product", product);
+  // console.log("product", product);
 
   const firstImage = product.masterVariant.images?.[0];
   const usPrice = product.masterVariant.prices?.find(

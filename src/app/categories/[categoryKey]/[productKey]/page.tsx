@@ -2,23 +2,19 @@ import { getProductByKey } from "@/util/commercetools/products";
 import Link from "next/link";
 import ProductImageGallery from "@/components/ProductImageGallery";
 
-interface PageProps {
-  params: {
-    categoryKey: string;
-    productKey: string;
-  };
-}
+export default async function ProductPage(props: {
+  params: Promise<{ categoryKey: string; productKey: string }>;
+}) {
+  const params = await props.params;
+  // const [categoryKey, productKey] = await Promise.all([
+  //   Promise.resolve(params.categoryKey),
+  //   Promise.resolve(params.productKey),
+  // ]);
 
-export default async function ProductPage({ params }: PageProps) {
-  const [categoryKey, productKey] = await Promise.all([
-    Promise.resolve(params.categoryKey),
-    Promise.resolve(params.productKey),
-  ]);
-
-  const product = await getProductByKey(productKey);
-  console.log("product", product);
-  console.log("price", product.masterData.current.masterVariant.price);
-  console.log("prices", product.masterData.current.masterVariant.prices);
+  const product = await getProductByKey(params.productKey);
+  // console.log("product", product);
+  // console.log("price", product.masterData.current.masterVariant.price);
+  // console.log("prices", product.masterData.current.masterVariant.prices);
 
   const usPrice = product.masterData.current.masterVariant.prices?.find(
     (price) => price.country === "US"
@@ -34,7 +30,7 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <div className="min-h-screen p-8 pb-20 sm:p-20">
       <Link
-        href={`/categories/${categoryKey}`}
+        href={`/categories/${params.categoryKey}`}
         className="text-blue-500 hover:text-blue-700 mb-8 inline-block"
       >
         ← Back to Category
@@ -65,7 +61,7 @@ export default async function ProductPage({ params }: PageProps) {
             <div>
               <span className="font-bold">Description:</span>
               <p className="mt-2">
-                {product.masterData.current.description["en-US"]}
+                {product.masterData.current.description?.["en-US"] || ""}
               </p>
             </div>
 
