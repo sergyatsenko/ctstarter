@@ -1,14 +1,10 @@
-//import Image from "next/image";
-import { getProductById, getCategories } from "@/util/commercetools/products";
+import { getProductById } from "@/util/commercetools/products";
 import Link from "next/link";
-//import { LocalizedString } from "@commercetools/platform-sdk";
 
 export default async function Home() {
   const productId: string = "a09c2128-e000-4501-a656-f219b1efbdb6";
   const locale: string = process.env.SITE_LOCALE || "en-US";
 
-  // const categories = await getCategories(100, 1);
-  // console.log("categories", categories);
   const product = await getProductById(productId);
   const productName = product?.masterData?.current?.name?.[locale] || "";
 
